@@ -1,0 +1,29 @@
+category,completed,not_completed,not_in_scope
+'General' ,3,4,2
+'Asset Management' ,5,2,1
+'Mainframe' ,0,0,0
+'Identity and Access Management' ,5,2,1
+'Monitoring' ,5,2,1
+'Network' ,0,0,0
+'Disaster Recovery' ,5,2,1
+'Backup and Recovery' ,0,0,0
+'BaaS' ,0,0,0
+'Risk and Compliance' ,0,0,0
+'Shared Network Services' ,5,2,1
+'Security' ,0,0,0
+'Privacy & Regulatory' ,0,0,0
+'Service Management (IPC and others)' ,5,2,1
+'CIBD' ,0,0,0
+'Service Desk' ,5,2,1
+'Compute' ,5,2,1
+'Wintel' ,5,2,1
+'Linux/AIX' ,5,2,1
+'vmware' ,0,0,0
+'SQL' ,0,0,0
+'Oracle' ,0,0,0
+'DB2' ,0,0,0
+'sybase' ,0,0,0
+'Middleware' ,0,0,0
+'Storage' ,0,0,0
+'Test 123' ,0,0,0
+'Test 1234' ,0,0,0
