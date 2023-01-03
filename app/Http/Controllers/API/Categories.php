@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ServiceCategoryCollection;
 use Illuminate\Http\Request;
 use App\Models\ServiceCategory;
 
@@ -133,5 +134,14 @@ class Categories extends Controller
             'message' => 'Category has been duplicated successfully.',
             'success' => true
         ]);
+    }
+
+    public function list(Request $request)
+    {
+        $records = ServiceCategory::get();
+
+        $resourceCollection = new ServiceCategoryCollection($records);
+
+        return $resourceCollection;
     }
 }

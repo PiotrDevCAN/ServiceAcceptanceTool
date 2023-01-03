@@ -550,6 +550,9 @@ Route::prefix('api/account')
 
         Route::post('duplicate/{account}', [AccountsAPI::class, 'duplicate'])
             ->name('duplicate');
+
+        Route::get('list', [AccountsAPI::class, 'list'])
+            ->name('list');
     });
 
 // Section
@@ -571,6 +574,9 @@ Route::prefix('api/section')
 
         Route::post('duplicate/{section}', [SectionsAPI::class, 'duplicate'])
             ->name('duplicate');
+
+        Route::get('list', [SectionsAPI::class, 'list'])
+            ->name('list');
 });
 
 // Categories
@@ -592,6 +598,9 @@ Route::prefix('api/category')
 
         Route::post('duplicate/{category}', [CategoriesAPI::class, 'duplicate'])
             ->name('duplicate');
+
+        Route::get('list', [CategoriesAPI::class, 'list'])
+            ->name('list');
 });
 
 // Services
@@ -613,6 +622,9 @@ Route::prefix('api/service')
 
         Route::post('duplicate/{service}', [ServicesAPI::class, 'duplicate'])
             ->name('duplicate');
+
+        Route::get('list', [ServicesAPI::class, 'list'])
+            ->name('list');
 });
 
 // Checklists
@@ -640,6 +652,9 @@ Route::prefix('api/checklist')
 
         Route::post('duplicate/{checklist}', [ChecklistsAPI::class, 'duplicate'])
             ->name('duplicate');
+
+        Route::get('list', [ChecklistsAPI::class, 'list'])
+            ->name('list');
 });
 
 // Checklists Categories
@@ -700,4 +715,7 @@ Route::prefix('api/access')
 
         Route::post('reject/{access}', [AccessRequestsAPI::class, 'reject'])
             ->name('reject');
+
+        Route::get('list', [AccessRequestsAPI::class, 'list'])
+            ->name('list');
 });

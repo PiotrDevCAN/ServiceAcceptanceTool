@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div id="account-details" class="ibm-tabs-content">
-                        <x-checklist.account-form name="accountForm" :record="$record"/>
+                        <x-checklist.account-form :record="$record"/>
                     </div>
                     <div id="account-status" class="ibm-tabs-content">
                         <x-checklist.account-status :record="$record"/>
@@ -96,7 +96,7 @@
 <!-- Overlay -->
 <div class="ibm-common-overlay ibm-overlay-alt-three" data-widget="overlay" id="createAccountModal">
     <div id='createAccountModalContent'>
-        <x-checklist.account-form-wizard name="createAccountForm" :record="$newRecord" />
+        <x-checklist.account-form-wizard :record="$newRecord" />
     </div>
 </div>
 

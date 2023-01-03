@@ -29,7 +29,7 @@
             <th>Section</th>
             <th>Question</th>
             <th>Evidence + Additional Input</th>
-            <th>Owner (Account DPE)</th>
+            <th>Owner</th>
             <th>Completion Date</th>
             <th>Status</th>
         </tr>

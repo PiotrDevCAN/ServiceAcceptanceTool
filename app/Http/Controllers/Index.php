@@ -47,69 +47,6 @@ class Index extends Controller
         // BlueGroupsManageServiceInterface $blueGroupsManage
         )
     {
-
-        // dump('a');
-        // dd();
-
-        // dump($request->user());
-        // dump($request->user()->isAdmin);
-        // dump($request->user()->isGuest);
-
-        // dump($test);
-        // $test->myTest();
-        // dd(app()->make(TestServiceInterface::class));
-        // dump(TestServiceInterface::class);
-
-        // if (app()->providerIsLoaded(TestServiceInterface::class)) {
-        //     // Do something
-        //     dump('loaded');
-        // } else {
-        //     dump('not loaded');
-        // }
-
-        // dump(app());
-        // dump(app()->getBindings());
-        // dump(app()->config['bluepages']['url']);
-
-        // dump($bluePages);
-        // dump($blueGroups);
-        // dump($blueGroupsManage);
-
-        // $notesId = BluePages::getNotesidFromIntranetId('piotr.tajanowicz@ocean.ibm.com');
-        // dump($notesId);
-
-        // $groups = BlueGroups::employee_bluegroups('piotr.tajanowicz@ocean.ibm.com');
-        // $groups = $blueGroups->employee_bluegroups('piotr.tajanowicz@ocean.ibm.com');
-        // dump($groups);
-
-        // $user = Auth::user();
-        // dump($user);
-        // dump($user->hasUserRole());
-        // dump($user->hasAdminRole());
-
-        // $adminBg = app()->config['app']['adminBg'];
-        // $auth = $blueGroups->group_auth('piotr.tajanowicz@ocean.ibm.com', $adminBg);
-        // dump($auth);
-
-        // $adminBg = app()->config['app']['adminBg'];
-
-        // $app->config['bluegroups']['url']
-
-        // $auth = BlueGroups::group_auth('piotr.tajanowicz@ocean.ibm.com', $adminBg);
-        // dump($auth);
-
-        // dump(BluePages);
-        // dump(BlueGroups);
-        // dump(BlueGroupsManage);
-
-        // $url = URL::to("/");
-        // $url2 = url('/');
-        // $url3 = url('');
-        // $url4 = app()->config['app']['url'];
-        // $url5 = url();
-
-        // dump($url, $url2, $url3, $url4);
-
         // Get the currently authenticated user...
         $user = Auth::user();
         $userMail = $user->mail[0];

@@ -4,8 +4,7 @@
  *
  */
 
-import datePickerOptions from "../addons/datePickerOptions.js";
-import initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew from "../addons/facesType.js";
+import initialiseFacesTypeAheadOnForm from "../addons/facesType.js";
 import editModal from "./editModal.js";
 
 class accessesModal extends editModal {
@@ -25,11 +24,7 @@ class accessesModal extends editModal {
     }
 
     initialiseForm() {
-        var typeaheadInputs = $('input.typeaheadNew:visible');
-        for (var n = 0; n < typeaheadInputs.length; n++) {
-            var id = typeaheadInputs.eq(n).attr('id');
-            initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, "accessForm");
-        }
+        initialiseFacesTypeAheadOnForm("accessForm");
     }
 
     listenForApproveRecord() {

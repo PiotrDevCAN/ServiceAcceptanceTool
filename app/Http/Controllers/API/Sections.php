@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ServiceSectionCollection;
+use App\Models\ChecklistService;
 use Illuminate\Http\Request;
 use App\Models\ServiceSection;
 
@@ -87,5 +89,14 @@ class Sections extends Controller
             'message' => 'Section has been duplicated successfully.',
             'success' => true
         ]);
+    }
+
+    public function list(Request $request)
+    {
+        $records = ServiceSection::get();
+
+        $resourceCollection = new ServiceSectionCollection($records);
+
+        return $resourceCollection;
     }
 }

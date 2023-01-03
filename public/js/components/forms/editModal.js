@@ -4,7 +4,7 @@
  *
  */
 
-import initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew from "../addons/facesType.js";
+import initialiseFacesTypeAheadOnForm from "../addons/facesType.js";
 import showHideSpinner from "../addons/spinner.js";
 import validateForm from "../addons/validateForm.js";
 
@@ -95,8 +95,7 @@ class editModal {
                 //show the overlay
                 IBMCore.common.widget.overlay.show('overlayInfo');
 
-                // redirect to index page
-                window.location.replace(responseObj.entryUrl);
+                $this.makeRedirection(responseObj);
             },
             error: function (data) {
                 switch(data.status) {
@@ -140,6 +139,11 @@ class editModal {
         // alert(this.formId);
     }
 
+    makeRedirection(responseObj) {
+        // redirect to index page
+        window.location.replace(responseObj.entryUrl);
+    }
+
     listenForSubmitForm() {
         var $this = this;
         $(document).on('submit', $this.formId, function (event) {
@@ -167,6 +171,7 @@ class editModal {
         var $this = this;
         $(document).on('click', $this.formId + ' #resetRecord', function (e) {
             e.preventDefault();
+            alert('reset all fields in form');
             // $this.submitFormWithValidation();
         });
     }
@@ -175,7 +180,6 @@ class editModal {
         var $this = this;
         $(document).on('click', $this.formId + ' #duplicateRecord', function (e) {
             e.preventDefault();
-
             $this.performDuplicateRecordAjax();
         });
     }
@@ -203,6 +207,7 @@ class editModal {
 
                 // populate the div or span in the overlay
                 document.getElementById("overlayInfoContent").innerHTML = message;
+
                 //show the overlay
                 IBMCore.common.widget.overlay.show('overlayInfo');
 
@@ -258,6 +263,7 @@ class editModal {
 
                 // populate the div or span in the overlay
                 document.getElementById("overlayInfoContent").innerHTML = message;
+
                 //show the overlay
                 IBMCore.common.widget.overlay.show('overlayInfo');
 
@@ -357,11 +363,7 @@ class editModal {
                     //show the overlay
                     IBMCore.common.widget.overlay.show($this.modalId);
 
-                    var typeaheadInputs = $('input.typeaheadNew:not(".tt-input, .tt-hint")');
-                    for (var n = 0; n < typeaheadInputs.length; n++) {
-                        var id = typeaheadInputs.eq(n).attr('id');
-                        initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, "accountForm");
-                    }
+                    initialiseFacesTypeAheadOnForm("accountForm");
                 },
                 complete: function () {
                     showHideSpinner('hide');
@@ -394,11 +396,7 @@ class editModal {
                         //show the overlay
                         IBMCore.common.widget.overlay.show($this.modalId);
 
-                        var typeaheadInputs = $('input.typeaheadNew:not(".tt-input, .tt-hint")');
-                        for (var n = 0; n < typeaheadInputs.length; n++) {
-                            var id = typeaheadInputs.eq(n).attr('id');
-                            initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, "accountForm");
-                        }
+                        initialiseFacesTypeAheadOnForm("accountForm");
                     },
                     complete: function () {
                         showHideSpinner('hide');
@@ -429,11 +427,7 @@ class editModal {
                         //show the overlay
                         IBMCore.common.widget.overlay.show($this.modalId);
 
-                        var typeaheadInputs = $('input.typeaheadNew:not(".tt-input, .tt-hint")');
-                        for (var n = 0; n < typeaheadInputs.length; n++) {
-                            var id = typeaheadInputs.eq(n).attr('id');
-                            initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, "accountForm");
-                        }
+                        initialiseFacesTypeAheadOnForm("accountForm");
                     },
                     complete: function () {
                         showHideSpinner('hide');

@@ -28,6 +28,17 @@ a {
     border-color: #e71d32;
 }
 
+.ibm-btn-blue-50.ibm-btn-pri,
+.ibm-btn-blue-50.ibm-btn-pri:focus,
+.ibm-btn-blue-50.ibm-btn-pri:hover,
+.ibm-btn-blue-50.ibm-btn-sec,
+.ibm-btn-blue-50.ibm-btn-sec:focus,
+.ibm-btn-blue-50.ibm-btn-sec:hover {
+    background: #e71d32;
+    border-color: #e71d32;
+    color: #fff;
+}
+
 .ibm-column-form input[type=email]:hover,
 .ibm-column-form input[type=number]:hover,
 .ibm-column-form input[type=password]:hover,

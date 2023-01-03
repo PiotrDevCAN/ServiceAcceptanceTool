@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Facades\BlueGroups;
 use App\Facades\BlueGroupsManage;
+use App\Http\Resources\AccessRequestCollection;
 use App\Models\AccessRequest;
 
 class AccessRequests extends Controller
@@ -149,5 +150,14 @@ class AccessRequests extends Controller
             'message' => 'Access Request has been rejected successfully.',
             'success' => true
         ]);
+    }
+
+    public function list(Request $request)
+    {
+        $records = AccessRequest::get();
+
+        $resourceCollection = new AccessRequestCollection($records);
+
+        return $resourceCollection;
     }
 }

@@ -3,11 +3,12 @@
 namespace App\View\Components\Checklist;
 
 use Illuminate\View\Component;
+use App\Models\ServiceCategory;
 
-class AccountForm extends Component
+class ChecklistFormCard extends Component
 {
-    public $name;
     public $record;
+    public $types;
 
     /**
      * Create a new component instance.
@@ -16,8 +17,8 @@ class AccountForm extends Component
      */
     public function __construct($record)
     {
-        $this->name = 'accountForm';
         $this->record = $record;
+        $this->types = ServiceCategory::TYPES;
     }
 
     /**
@@ -27,6 +28,6 @@ class AccountForm extends Component
      */
     public function render()
     {
-        return view('components.checklist.account-form');
+        return view('components.checklist.checklist-form-card');
     }
 }

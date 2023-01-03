@@ -1,13 +1,15 @@
-{{ Form::open(['route' => [Route::currentRouteName(), ''], 'id' => $name, 'class'  => 'ibm-column-form' ]) }}
+{{ Form::open(['route' => [Route::currentRouteName(), $record->id], 'id' => $name, 'class'  => 'ibm-column-form' ]) }}
     <div class="ibm-fluid">
         <div class="ibm-col-12-12">
-            @include('components.checklist.account-form-card')
-            {{-- <x-checklist.account-form-card :record="$newRecord" :types="$types" :states="$states" :accounts="$accounts" :newRecord="$record"/> --}}
+            <x-checklist.account-form-card :record="$record" wizard="1"/>
         </div>
     </div>
     <div class="ibm-rule ibm-alternate ibm-red-50"><hr></div>
 
-    <p><b>Click Save to Add the Account.</b></p>
-    {{-- @include('components.form-buttons') --}}
+    <p><b>Click Save to Create the Account.</b></p>
+    <p class="ibm-btn-row ibm-ind-link">
+        <a id="createAccountRecord" class="ibm-btn-pri ibm-bee-link ibm-btn-red-50" href="#">Save</a>
+        <a href="javascript:;" id='closeCreateAccountModal' class="ibm-close-link ibm-btn-sec ibm-btn-red-50" onclick="IBMCore.common.widget.overlay.hide('createAccountModal', true);">Close</a>
+    </p>
 
 {{ Form::close() }}

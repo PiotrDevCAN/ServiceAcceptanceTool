@@ -1,4 +1,4 @@
-@isset($record->account)
+@if(isset($record->account))
     <div class="ibm-card">
         <div class="ibm-card__content ibm-padding-bottom-0 ibm-padding-border-left">
 
@@ -40,7 +40,7 @@
             <input type="hidden" id="account_dpe_intranet_id" name="account_dpe_intranet_id" value="{{ $record->account->account_dpe_intranet_id }}"/>
 
             <p>
-                <label for="tt_focal">T&amp;T Focal <span class="ibm-required @if ($record->type == 'T&T_YES') ibm-hide @endif">*</span></label>
+                <label for="tt_focal">T&amp;T Focal <span class="ibm-required @if ($record->type == 'T&T_NO') ibm-hide @endif">*</span></label>
                 <span>
                     <input type='text' id='tt_focal' name='tt_focal_notes_id' class='typeaheadNew ibm-fullwidth' value='{{ $record->account->tt_focal_notes_id }}' autocomplete='off' placeholder='Start typing a name to perform a lookup' @if ($record->type == 'T&T_YES') required='required' @endif/>
                 </span>
@@ -53,34 +53,42 @@
     <div class="ibm-card">
         <div class="ibm-card__content ibm-padding-bottom-0 ibm-padding-border-left">
             <div class="ibm-fluid">
-                <div class="ibm-col-12-8">
-                    <p class='ibm-form-elem-grp' id='ACCOUNTFormGroup'>
-                        <label for='account'>Account Name <span class="ibm-required">*</span></label>
-                        <span>
-                            <select
-                                class='ibm-fullwidth'
-                                name='account'
-                                id='account'
-                                data-tags="true"
-                                data-allow-clear="true"
-                                data-minimum-results-for-search="1"
-                            >
-                            <option value=''>Select</option>
-                            @foreach ($accounts as $key => $value)
-                                <option value='{{ $value->id }}'>{{ $value->name }}</option>
-                            @endforeach
-                            </select>
-                        </span>
-                    </p>
-                </div>
-                <div class="ibm-col-12-4">
-                    <p class="ibm-btn-row ibm-ind-link">
-                        <a id="createAccountRecord" class="ibm-btn-pri ibm-bee-link ibm-btn-red-50" href="#">New Account Setup Wizard</a>
-                    </p>
-                </div>
-                <div class="ibm-col-12-12">
-                    <p class="ibm-item-note ibm-bold">In order to create a new account type its name into the field above and fulfill the fields underneath or use a wizard.</p>
-                </div>
+                @if(isset($wizard))
+                    <div class="ibm-col-12-12">
+                        <input type="hidden" id="id" name="id" value=""/>
+                        <x-ibmv18form-input field-name="account" label="Account Name" required='required'/>
+                    </div>
+                @else
+                    <div class="ibm-col-12-8">
+                        <p class='ibm-form-elem-grp' id='ACCOUNTFormGroup'>
+                            <label for='account'>Account Name <span class="ibm-required">*</span></label>
+                            <span>
+                                <select
+                                    class='ibm-fullwidth'
+                                    name='account'
+                                    id='account'
+                                    required='required'
+                                    data-tags="true"
+                                    data-allow-clear="true"
+                                    data-minimum-results-for-search="1"
+                                >
+                                <option value=''>Select</option>
+                                {{-- @foreach ($accounts as $key => $value)
+                                    <option value='{{ $value->id }}'>{{ $value->name }}</option>
+                                @endforeach --}}
+                                </select>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="ibm-col-12-4">
+                        <p class="ibm-btn-row ibm-ind-link">
+                            <a id="createAccountWizard" class="ibm-btn-pri ibm-bee-link ibm-btn-red-50" href="#">New Account Setup Wizard</a>
+                        </p>
+                    </div>
+                    <div class="ibm-col-12-12">
+                        <p class="ibm-item-note ibm-bold">In order to create a new account type its name into the field above and fulfill the fields underneath or use a wizard.</p>
+                    </div>
+                @endif
             </div>
             <p class='ibm-form-elem-grp' id='TRANSITION_STATEFormGroup'>
                 <label for='transition_state'>Transition State <span class="ibm-required">*</span></label>
@@ -118,9 +126,9 @@
             <input type="hidden" id="account_dpe_intranet_id" name="account_dpe_intranet_id" value=""/>
 
             <p>
-                <label for="tt_focal">T&amp;T Focal <span class="ibm-required">*</span></label>
+                <label for="tt_focal">T&amp;T Focal <span class="ibm-required @if ($record->type == 'T&T_NO') ibm-hide @endif">*</span></label>
                 <span>
-                    <input type='text' id='tt_focal' name='tt_focal_notes_id' class='typeaheadNew ibm-fullwidth' value='' autocomplete='off' placeholder='Start typing a name to perform a lookup' required="required"/>
+                    <input type='text' id='tt_focal' name='tt_focal_notes_id' class='typeaheadNew ibm-fullwidth' value='' autocomplete='off' placeholder='Start typing a name to perform a lookup' @if ($record->type == 'T&T_YES') required='required' @endif/>
                 </span>
             </p>
             <input type="hidden" id="tt_focal_name" name="tt_focal" value=""/>

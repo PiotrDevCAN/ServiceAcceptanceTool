@@ -7,8 +7,11 @@
 import isNumeric from "../addons/isNumeric.js";
 import showHideSpinner from "../addons/spinner.js";
 import datePickerOptions from "../addons/datePickerOptions.js";
-import initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew from "../addons/facesType.js";
+import initialiseFacesTypeAheadOnForm from "../addons/facesType.js";
 import editModal from "../forms/editModal.js";
+import accountsWizardModal from "./accountsWizardModal.js";
+
+import accountNameSelect from "../selects/accountName.js";
 
 class checkListsModal extends editModal {
 
@@ -25,17 +28,12 @@ class checkListsModal extends editModal {
         this.listenForChecklistTypeCancellation();
 
         this.listenForAccountNameChange();
-        this.listenForNewAccountWizard();
 
         console.log('--- Function --- checkListsModal.constructor');
     }
 
     initialiseForm() {
-        var typeaheadInputs = $('input.typeaheadNew:visible');
-        for (var n = 0; n < typeaheadInputs.length; n++) {
-            var id = typeaheadInputs.eq(n).attr('id');
-            initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, "accountForm");
-        }
+        initialiseFacesTypeAheadOnForm("accountForm");
 
         IBMCore.common.widget.datepicker.init("#go_live_date", datePickerOptions);
     }
@@ -106,6 +104,7 @@ class checkListsModal extends editModal {
         $(document).on('change', 'select#checklist_type', function (event) {
             var checklist_id = $('#checklist_id').val();
             if (checklist_id !== '') {
+
                 //show the overlay
                 IBMCore.common.widget.overlay.show('changeChecklistTypeModal');
             } else{
@@ -175,14 +174,6 @@ class checkListsModal extends editModal {
                 $('#saveRecord').prop("disabled", false);
                 $('#saveRecord').next().prop("disabled", false);
             }
-        });
-    }
-
-    listenForNewAccountWizard() {
-        var $this = this;
-        $(document).on('click', '#createAccountRecord', function (event) {
-            //show the overlay
-            IBMCore.common.widget.overlay.show('createAccountModal');
         });
     }
 }

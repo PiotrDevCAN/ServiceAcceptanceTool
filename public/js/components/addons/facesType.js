@@ -1,3 +1,11 @@
+function initialiseFacesTypeAheadOnForm(formId) {
+    var typeaheadInputs = $('#' + formId + ' input.typeaheadNew:visible');
+    for (var n = 0; n < typeaheadInputs.length; n++) {
+        var id = typeaheadInputs.eq(n).attr('id');
+        initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, formId);
+    }
+}
+
 function initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, formName) {
     console.log("initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew: " + id + " " + formName);
 
@@ -28,7 +36,7 @@ function initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, formName) {
     console.log('Initialising New FacesTypahead on ' + id + " " + formName);
     var thisForm = document.getElementById(formName);
 
-    $('#' + id + '.typeaheadNew').typeahead(null, {
+    $('#' + formName + ' #' + id + '.typeaheadNew').typeahead(null, {
         limit: 3,
         name: 'bluepages',
         display: 'notesEmail',
@@ -44,7 +52,7 @@ function initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, formName) {
         }
     });
 
-    $('#' + id + '.typeaheadNew').on('typeahead:select', function (ev, suggestion) {
+    $('#' + formName + ' #' + id + '.typeaheadNew').on('typeahead:select', function (ev, suggestion) {
 
         var intranet = thisForm.elements[id + '_intranet_id'];
         if (typeof (intranet) !== 'undefined') {
@@ -73,4 +81,5 @@ function initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew(id, formName) {
     });
 }
 
-export { initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew as default };
+// export { initialiseFacesTypeAheadOnDynamicallyCreatedFieldNew as default };
+export { initialiseFacesTypeAheadOnForm as default };

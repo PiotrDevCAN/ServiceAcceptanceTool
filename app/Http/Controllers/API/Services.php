@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ServiceCollection;
 use Illuminate\Http\Request;
 use App\Models\Service;
 
@@ -98,5 +99,14 @@ class Services extends Controller
             'message' => 'Service has been duplicated successfully.',
             'success' => true
         ]);
+    }
+
+    public function list(Request $request)
+    {
+        $records = Service::get();
+
+        $resourceCollection = new ServiceCollection($records);
+
+        return $resourceCollection;
     }
 }

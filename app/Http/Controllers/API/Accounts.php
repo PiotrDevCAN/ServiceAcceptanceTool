@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AccountCollection;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use Illuminate\Support\Facades\Auth;
@@ -121,5 +122,14 @@ class Accounts extends Controller
             'message' => 'Account has been duplicated successfully.',
             'success' => true
         ]);
+    }
+
+    public function list(Request $request)
+    {
+        $records = Account::get();
+
+        $resourceCollection = new AccountCollection($records);
+
+        return $resourceCollection;
     }
 }

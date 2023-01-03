@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ChecklistCollection;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use App\Models\Checklist;
@@ -153,5 +154,14 @@ class Checklists extends Controller
             'record' => $record,
             'calculation' => $calculation
         ]);
+    }
+
+    public function list(Request $request)
+    {
+        $records = Checklist::get();
+
+        $resourceCollection = new ChecklistCollection($records);
+
+        return $resourceCollection;
     }
 }
