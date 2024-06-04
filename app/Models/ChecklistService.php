@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class ChecklistService extends Model
 {
@@ -51,7 +50,10 @@ class ChecklistService extends Model
         'status',
         'evidence',
         'completition_date',
-        'user_input'
+        'user_input',
+        'owner',
+        'owner_notes_id',
+        'owner_intranet_id'
     ];
 
     protected $appends = ['entry_url'];

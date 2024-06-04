@@ -181,6 +181,7 @@ return [
         App\Providers\BlueGroupsManageServiceProvider::class,
 
         App\Providers\TestServiceProvider::class,
+        App\Providers\MainCategoriesServiceProvider::class,
 
         /*
          * laravel-collective Providers

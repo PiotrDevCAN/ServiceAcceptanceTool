@@ -19,4 +19,10 @@
     </div>
 </div>
 
+@include('components/modals/massUpdateAction')
+
+@include('components/modals/massUpdateCategoryAction')
+
+@include('components/modals/massUpdateSectionAction')
+
 @endsection

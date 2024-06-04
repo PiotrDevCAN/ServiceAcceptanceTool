@@ -70,7 +70,11 @@
             window.apiUrl = "{{ url('/') }}/api/";
         </script>
 
+        <script type="text/javascript">
+            var VERSION = 'v={{ env('APP_VERSION') }}';
+        </script>
         <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+        <script type="module" src="{{ asset('js/components/addons/versioning.js') }}"></script>
 
         {{-- <script type="module" src="{{ asset('js/app.js') }}"></script> --}}
 

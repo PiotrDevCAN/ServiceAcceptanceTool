@@ -7,7 +7,7 @@
 <x-action-list-buttons createUrl="{{ route('admin.section.create') }}" exportUrl="{{ route('admin.section.export') }}"/>
 
 @isset($records)
-	<x-section.table name="sectionsTable" :records="$records" />
+	<x-section.table-simple name="sectionsTable" :records="$records" />
 @endisset
 
 <!-- Overlay -->
@@ -16,5 +16,7 @@
         <x-section.form name="sectionForm" :record="$record" />
     </div>
 </div>
+
+@include('components/modals/massUpdateAction')
 
 @endsection

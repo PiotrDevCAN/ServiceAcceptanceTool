@@ -12,7 +12,7 @@ class Button extends Component
     public $disabled;
     public $data;
     public $id;
-    
+
     public static $btnColorWhite    = 'ibm-btn-white';
     public static $btnColorGray     = 'ibm-btn-gray-50';
     public static $btnColorGreen    = 'ibm-btn-green-50';
@@ -23,9 +23,9 @@ class Button extends Component
     public static $btnColorOrange   = 'ibm-btn-orange-50';
     public static $btnColorBlue     = 'ibm-btn-blue-50';
     public static $btnColorBlack    = 'ibm-btn-black-50';
-    
+
     public static $btnSizeSmall     = 'ibm-btn-small';
-    
+
     /**
      * Create a new component instance.
      *
@@ -35,6 +35,8 @@ class Button extends Component
     {
         $this->classes = $classes;
         $this->label = $label;
+
+        // dump($this);
     }
 
     /**

@@ -45,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        /*
+        *
+        *  temporarily disable all defined observers
+        *
         Account::observe(AccountObserver::class);
         Checklist::observe(ChecklistObserver::class);
         ChecklistCategory::observe(ChecklistCategoryObserver::class);
@@ -52,6 +56,7 @@ class AppServiceProvider extends ServiceProvider
         Service::observe(ServiceObserver::class);
         ServiceCategory::observe(ServiceCategoryObserver::class);
         ServiceSection::observe(ServiceSectionObserver::class);
+        */
 
         Blade::component('ibmv18form-input', Input::class);
         Blade::component('ibmv18form-select', Select::class);

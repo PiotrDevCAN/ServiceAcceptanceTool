@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-// use Touhidurabir\Filterable\Filterable;
 
 class Checklist extends Model
 {
@@ -47,7 +45,7 @@ class Checklist extends Model
         'duplicated_from'
     ];
 
-    protected $appends = ['completed_pct', 'not_completed_pct', 'entry_url'];
+    protected $appends = ['category_completed_pct', 'category_not_completed_pct', 'completed_pct', 'not_completed_pct', 'entry_url'];
     // protected $appends = ['completed_pct', 'not_completed_pct', 'duplicated_from'];
 
     /**
@@ -125,7 +123,8 @@ class Checklist extends Model
     public function categories()
     {
         return $this->belongsToMany(ServiceCategory::class, 'checklist_categories', 'checklist_id', 'category_id')
-            ->withPivot('id', 'in_scope', 'status');
+            ->withPivot('id', 'in_scope', 'status')
+            ->using(ChecklistCategoryPivot::class);
     }
 
     /**
@@ -134,7 +133,8 @@ class Checklist extends Model
     public function services()
     {
         return $this->belongsToMany(Service::class, 'checklist_services', 'checklist_id', 'service_id')
-            ->withPivot('id', 'status', 'evidence', 'completition_date', 'user_input');
+            ->withPivot('id', 'status', 'evidence', 'completition_date', 'user_input')
+            ->using(ChecklistServicePivot::class);
     }
 
     /**
@@ -144,6 +144,7 @@ class Checklist extends Model
     {
         return $this->belongsToMany(Service::class, 'checklist_services', 'checklist_id', 'service_id')
             ->withPivot('id', 'status', 'evidence', 'completition_date', 'user_input')
+            ->using(ChecklistServicePivot::class)
             ->wherePivot('status', '=', Service::IN_SCOPE_NO);
     }
 
@@ -154,6 +155,7 @@ class Checklist extends Model
     {
         return $this->belongsToMany(Service::class, 'checklist_services', 'checklist_id', 'service_id')
             ->withPivot('id', 'status', 'evidence', 'completition_date', 'user_input')
+            ->using(ChecklistServicePivot::class)
             ->wherePivot('status', '=', Service::IN_SCOPE_YES);
     }
 
@@ -164,6 +166,7 @@ class Checklist extends Model
     {
         return $this->belongsToMany(Service::class, 'checklist_services', 'checklist_id', 'service_id')
             ->withPivot('id', 'status', 'evidence', 'completition_date', 'user_input')
+            ->using(ChecklistServicePivot::class)
             ->wherePivot('status', '=', Service::IN_SCOPE_NOT_IN_SCOPE);
     }
 
@@ -180,6 +183,24 @@ class Checklist extends Model
     {
         if (($this->in_scope_yes_count + $this->in_scope_no_count) != 0) {
             return round((($this->in_scope_no_count / ($this->in_scope_yes_count + $this->in_scope_no_count)) * 100), 2);
+        } else {
+            return 0;
+        }
+    }
+
+    public function getCategoryCompletedPctAttribute($value)
+    {
+        if (($this->checklist_categories_completed_in_scope_yes_count + $this->checklist_categories_not_completed_in_scope_yes_count) != 0) {
+            return round((($this->checklist_categories_completed_in_scope_yes_count / ($this->checklist_categories_completed_in_scope_yes_count + $this->checklist_categories_not_completed_in_scope_yes_count)) * 100), 2);
+        } else {
+            return 0;
+        }
+    }
+
+    public function getCategoryNotCompletedPctAttribute($value)
+    {
+        if (($this->checklist_categories_completed_in_scope_yes_count + $this->checklist_categories_not_completed_in_scope_yes_count) != 0) {
+            return round((($this->checklist_categories_not_completed_in_scope_yes_count / ($this->checklist_categories_completed_in_scope_yes_count + $this->checklist_categories_not_completed_in_scope_yes_count)) * 100), 2);
         } else {
             return 0;
         }
@@ -206,6 +227,7 @@ class Checklist extends Model
         return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id');
     }
 
+    // Checklist Categories by Type
     public function checklistCategoriesInScopeNo()
     {
         return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id')
@@ -228,5 +250,38 @@ class Checklist extends Model
     {
         return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id')
             ->where('status', '=', ServiceCategory::STATUS_NOT_COMPLETE);
+    }
+
+    // Checklist Categories by Complex Type
+    // Completed In Scope
+    public function checklistCategoriesCompletedInScopeYes()
+    {
+        return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id')
+            ->where('status', '=', ServiceCategory::STATUS_COMPLETE)
+            ->where('in_scope', '=', ServiceCategory::IN_SCOPE_YES);
+    }
+
+    // Completed Not In Scope
+    public function checklistCategoriesNotCompletedInScopeYes()
+    {
+        return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id')
+            ->where('status', '=', ServiceCategory::STATUS_NOT_COMPLETE)
+            ->where('in_scope', '=', ServiceCategory::IN_SCOPE_YES);
+    }
+
+    // Not Completed In Scope
+    public function checklistCategoriesCompletedInScopeNo()
+    {
+        return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id')
+            ->where('status', '=', ServiceCategory::STATUS_COMPLETE)
+            ->where('in_scope', '=', ServiceCategory::IN_SCOPE_NO);
+    }
+
+    // Not Completed Not In Scope
+    public function checklistCategoriesNotCompletedInScopeNo()
+    {
+        return $this->hasMany(ChecklistCategory::class, 'checklist_id', 'id')
+            ->where('status', '=', ServiceCategory::STATUS_NOT_COMPLETE)
+            ->where('in_scope', '=', ServiceCategory::IN_SCOPE_NO);
     }
 }

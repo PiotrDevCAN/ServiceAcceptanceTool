@@ -2,6 +2,7 @@
 
 namespace App\Mail\ChecklistService;
 
+use App\Models\Checklist;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -27,6 +28,6 @@ class Base extends Mailable
     {
         $this->request = $checklistService;
 
-        $this->requestEditUrl = route('admin.checklistService.edit', ['checklistService' => $this->request->id]);
+        $this->requestEditUrl = route('admin.checklist.overviewForChecklist', ['checklist' => $this->request->checklist_id]);
     }
 }

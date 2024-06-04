@@ -11,7 +11,7 @@
 
             @include('components.form-direct-link')
 
-            <x-ibmv18form-input field-name="account" label="Account Name" :value="$record->name"/>
+            <x-ibmv18form-input field-name="account" label="Account Name" :value="$record->name" required="required"/>
 
             <p class='ibm-form-elem-grp' id='TRANSITION_STATEFormGroup'>
                 <label for='transition_state'>Transition State <span class="ibm-required">*</span></label>

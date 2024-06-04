@@ -10,9 +10,16 @@ class AccessRequests extends Controller
 {
     public $blueGroupsManage;
 
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
     public function __construct(BlueGroupsManageServiceInterface $blueGroupsManage)
     {
         $this->blueGroupsManage = $blueGroupsManage;
+
+        $this->authorizeResource(AccessRequest::class, 'accessRequest');
     }
 
     public function users(Request $request)
@@ -37,11 +44,6 @@ class AccessRequests extends Controller
 
     public function admins(Request $request)
     {
-        if($aaa ) {
-
-        } else {
-
-        }
         $group = app()->config['app']['adminBg'];
 
         $records = $this->blueGroupsManage->listMembers($group);

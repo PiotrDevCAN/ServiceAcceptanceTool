@@ -223,8 +223,8 @@ Route::prefix('admin')
                 ->name('create');
 
             // Show the form for editing the specified resource.
-            Route::get('edit/{checklistCategory}', [ChecklistCategory::class, 'edit'])
-                ->name('edit');
+            // Route::get('edit/{checklistCategory}', [ChecklistCategory::class, 'edit'])
+            //     ->name('edit');
         });
 
         // Checklists Services
@@ -237,8 +237,8 @@ Route::prefix('admin')
                 ->name('create');
 
             // Show the form for editing the specified resource.
-            Route::get('edit/{checklistService}', [ChecklistService::class, 'edit'])
-                ->name('edit');
+            // Route::get('edit/{checklistService}', [ChecklistService::class, 'edit'])
+            //     ->name('edit');
         });
 
         // Categories
@@ -343,22 +343,22 @@ Route::prefix('mailable')
                 Route::get('saved/{account}', function (Account $account) {
                     return new AccountSavedMail($account);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{account}', function (Account $account) {
                     return new AccountCreatedMail($account);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{account}', function (Account $account) {
                     return new AccountUpdatedMail($account);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{account}', function (Account $account) {
                     return new AccountDeletedMail($account);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
 
@@ -370,22 +370,22 @@ Route::prefix('mailable')
                 Route::get('saved/{checklist}', function (Checklist $checklist) {
                     return new ChecklistSavedMail($checklist);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{checklist}', function (Checklist $checklist) {
                     return new ChecklistCreatedMail($checklist);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{checklist}', function (Checklist $checklist) {
                     return new ChecklistUpdatedMail($checklist);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{checklist}', function (Checklist $checklist) {
                     return new ChecklistDeletedMail($checklist);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
 
@@ -397,22 +397,22 @@ Route::prefix('mailable')
                 Route::get('saved/{service}', function (Service $service) {
                     return new ServiceSavedMail($service);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{service}', function (Service $service) {
                     return new ServiceCreatedMail($service);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{service}', function (Service $service) {
                     return new ServiceUpdatedMail($service);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{service}', function (Service $service) {
                     return new ServiceDeletedMail($service);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
 
@@ -424,22 +424,22 @@ Route::prefix('mailable')
                 Route::get('saved/{serviceCategory}', function (ServiceCategory $serviceCategory) {
                     return new ServiceCategorySavedMail($serviceCategory);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{serviceCategory}', function (ServiceCategory $serviceCategory) {
                     return new ServiceCategoryCreatedMail($serviceCategory);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{serviceCategory}', function (ServiceCategory $serviceCategory) {
                     return new ServiceCategoryUpdatedMail($serviceCategory);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{serviceCategory}', function (ServiceCategory $serviceCategory) {
                     return new ServiceCategoryDeletedMail($serviceCategory);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
 
@@ -451,22 +451,22 @@ Route::prefix('mailable')
                 Route::get('saved/{serviceSection}', function (ServiceSection $serviceSection) {
                     return new ServiceSectionSavedMail($serviceSection);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{serviceSection}', function (ServiceSection $serviceSection) {
                     return new ServiceSectionCreatedMail($serviceSection);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{serviceSection}', function (ServiceSection $serviceSection) {
                     return new ServiceSectionUpdatedMail($serviceSection);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{serviceSection}', function (ServiceSection $serviceSection) {
                     return new ServiceSectionDeletedMail($serviceSection);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
 
@@ -478,22 +478,22 @@ Route::prefix('mailable')
                 Route::get('saved/{checklistCategory}', function (ChecklistCategory $checklistCategory) {
                     return new ChecklistCategorySavedMail($checklistCategory);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{checklistCategory}', function (ChecklistCategory $checklistCategory) {
                     return new ChecklistCategoryCreatedMail($checklistCategory);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{checklistCategory}', function (ChecklistCategory $checklistCategory) {
                     return new ChecklistCategoryUpdatedMail($checklistCategory);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{checklistCategory}', function (ChecklistCategory $checklistCategory) {
                     return new ChecklistCategoryDeletedMail($checklistCategory);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
 
@@ -505,22 +505,22 @@ Route::prefix('mailable')
                 Route::get('saved/{checklistService}', function (ChecklistService $checklistService) {
                     return new ChecklistServiceSavedMail($checklistService);
                 })
-                ->name('saved');
+                    ->name('saved');
 
                 Route::get('created/{checklistService}', function (ChecklistService $checklistService) {
                     return new ChecklistServiceCreatedMail($checklistService);
                 })
-                ->name('created');
+                    ->name('created');
 
                 Route::get('updated/{checklistService}', function (ChecklistService $checklistService) {
                     return new ChecklistServiceUpdatedMail($checklistService);
                 })
-                ->name('updated');
+                    ->name('updated');
 
                 Route::get('deleted/{checklistService}', function (ChecklistService $checklistService) {
                     return new ChecklistServiceDeletedMail($checklistService);
                 })
-                ->name('deleted');
+                    ->name('deleted');
 
             });
     });
@@ -577,6 +577,9 @@ Route::prefix('api/section')
 
         Route::get('list', [SectionsAPI::class, 'list'])
             ->name('list');
+
+        Route::post('mass-update', [SectionsAPI::class, 'massUpdate'])
+            ->name('mass-update');
 });
 
 // Categories
@@ -601,6 +604,12 @@ Route::prefix('api/category')
 
         Route::get('list', [CategoriesAPI::class, 'list'])
             ->name('list');
+
+        Route::get('show/{category}/services', [CategoriesAPI::class, 'servicesList'])
+            ->name('servicesList');
+
+        Route::post('mass-update', [CategoriesAPI::class, 'massUpdate'])
+            ->name('mass-update');
 });
 
 // Services
@@ -625,6 +634,9 @@ Route::prefix('api/service')
 
         Route::get('list', [ServicesAPI::class, 'list'])
             ->name('list');
+
+        Route::post('mass-update', [ServicesAPI::class, 'massUpdate'])
+            ->name('mass-update');
 });
 
 // Checklists
@@ -655,6 +667,18 @@ Route::prefix('api/checklist')
 
         Route::get('list', [ChecklistsAPI::class, 'list'])
             ->name('list');
+
+        Route::get('{checklist}/categories', [ChecklistsAPI::class, 'categoriesList'])
+            ->name('categoriesList');
+
+        Route::get('{checklist}/services', [ChecklistsAPI::class, 'servicesList'])
+            ->name('servicesList');
+
+        Route::get('{checklist}/category/{category}/services', [ChecklistsAPI::class, 'servicesByCategoryList'])
+            ->name('servicesByCategoryList');
+
+        Route::get('{checklist}/category/{category}/summary', [ChecklistsAPI::class, 'servicesSummary'])
+            ->name('servicesSummary');
 });
 
 // Checklists Categories
@@ -673,6 +697,9 @@ Route::prefix('api/checklist-category')
 
         Route::post('destroy/{category}', [ChecklistCategoriesAPI::class, 'destroy'])
             ->name('destroy');
+
+        Route::post('mass-update', [ChecklistCategoriesAPI::class, 'massUpdate'])
+            ->name('mass-update');
 });
 
 // Checklists Services
@@ -691,6 +718,9 @@ Route::prefix('api/checklist-service')
 
         Route::post('destroy/{service}', [ChecklistServicesAPI::class, 'destroy'])
             ->name('destroy');
+
+        Route::post('mass-update', [ChecklistServicesAPI::class, 'massUpdate'])
+            ->name('mass-update');
 });
 
 // Access Requests

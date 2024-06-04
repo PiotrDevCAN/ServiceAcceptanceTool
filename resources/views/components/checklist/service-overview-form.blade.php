@@ -10,7 +10,8 @@
             <input type="hidden" id="category_id" name="category_id" value=""/>
             <input type="hidden" id="checklist_id" name="checklist_id" value=""/>
 
-            <x-ibmv18form-input field-name="category" label="Category" :value="$record->name" readonly="readonly" disabled="disabled"/>
+            <x-ibmv18form-input field-name="parent_category" label="Parent Category" value="" required="required" readonly="readonly" disabled="disabled"/>
+            <x-ibmv18form-input field-name="category" label="Category" value="" required="required" readonly="readonly" disabled="disabled"/>
 
             <p class='ibm-form-elem-grp' id='IN_SCOPEFormGroup'>
                 <label for='in_scope'>In Scope <span class="ibm-required">*</span></label>

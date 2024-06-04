@@ -27,6 +27,6 @@ class Base extends Mailable
     {
         $this->request = $checklistCategory;
 
-        $this->requestEditUrl = route('admin.checklistCategory.edit', ['checklistCategory' => $this->request->id]);
+        $this->requestEditUrl = route('admin.checklist.overviewForChecklist', ['checklist' => $this->request->checklist_id]);
     }
 }

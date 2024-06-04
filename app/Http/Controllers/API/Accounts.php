@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Auth;
 class Accounts extends Controller
 {
     /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Account::class, 'account');
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -27,28 +37,29 @@ class Accounts extends Controller
             'transition_state' => 'required',
             'go_live_date' => 'required',
             'account_dpe' => 'required',
-            // 'account_dpe_notes_id' => 'required',
-            // 'account_dpe_intranet_id' => 'required',
+            'account_dpe_notes_id' => 'required',
+            'account_dpe_intranet_id' => 'required',
             'tt_focal' => 'required',
-            // 'tt_focal_notes_id' => 'required',
-            // 'tt_focal_intranet_id' => 'required'
+            'tt_focal_notes_id' => 'required',
+            'tt_focal_intranet_id' => 'required'
         ]);
         $account = new Account();
-        $account->name = $request->account;
-        $account->transition_state = $request->transition_state;
-        $account->go_live_date = $request->go_live_date;
-        $account->account_dpe = $request->account_dpe;
-        $account->account_dpe_notes_id = $request->account_dpe_notes_id;
-        $account->account_dpe_intranet_id = $request->account_dpe_intranet_id;
-        $account->tt_focal = $request->tt_focal;
-        $account->tt_focal_notes_id = $request->tt_focal_notes_id;
-        $account->tt_focal_intranet_id = $request->tt_focal_intranet_id;
+        $account->name = $request->post('account');
+        $account->transition_state = $request->post('transition_state');
+        $account->go_live_date = $request->post('go_live_date');
+        $account->account_dpe = $request->post('account_dpe');
+        $account->account_dpe_notes_id = $request->post('account_dpe_notes_id');
+        $account->account_dpe_intranet_id = $request->post('account_dpe_intranet_id');
+        $account->tt_focal = $request->post('tt_focal');
+        $account->tt_focal_notes_id = $request->post('tt_focal_notes_id');
+        $account->tt_focal_intranet_id = $request->post('tt_focal_intranet_id');
         $account->created_by = $userMail;
         $account->save();
 
         return response()->json([
             'message' => 'Account has been created successfully.',
             'success' => true,
+            'id' => $account->id,
             'entryUrl' => $account->entry_url
         ]);
     }
@@ -73,16 +84,30 @@ class Accounts extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        $account->name = $request->input('account');
-        $account->transition_state = $request->input('transition_state');
-        $account->go_live_date = $request->input('go_live_date');
-        $account->account_dpe = $request->input('account_dpe');
-        $account->account_dpe_notes_id = $request->input('account_dpe_notes_id');
-        $account->account_dpe_intranet_id = $request->input('account_dpe_intranet_id');
-        $account->tt_focal = $request->input('tt_focal');
-        $account->tt_focal_notes_id = $request->input('tt_focal_notes_id');
-        $account->tt_focal_intranet_id = $request->input('tt_focal_intranet_id');
-        $account->created_by = $request->input('created_by');
+        $request->validate([
+            'id' => 'required',
+            'account' => 'required',
+            'transition_state' => 'required',
+            'go_live_date' => 'required',
+            'account_dpe' => 'required',
+            'account_dpe_notes_id' => 'required',
+            'account_dpe_intranet_id' => 'required',
+            'tt_focal' => 'required',
+            'tt_focal_notes_id' => 'required',
+            'tt_focal_intranet_id' => 'required',
+            'created_by' => 'required'
+        ]);
+
+        $account->name = $request->post('account');
+        $account->transition_state = $request->post('transition_state');
+        $account->go_live_date = $request->post('go_live_date');
+        $account->account_dpe = $request->post('account_dpe');
+        $account->account_dpe_notes_id = $request->post('account_dpe_notes_id');
+        $account->account_dpe_intranet_id = $request->post('account_dpe_intranet_id');
+        $account->tt_focal = $request->post('tt_focal');
+        $account->tt_focal_notes_id = $request->post('tt_focal_notes_id');
+        $account->tt_focal_intranet_id = $request->post('tt_focal_intranet_id');
+        $account->created_by = $request->post('created_by');
         $account->save();
 
         // return response()->json($account);
@@ -126,7 +151,8 @@ class Accounts extends Controller
 
     public function list(Request $request)
     {
-        $records = Account::get();
+        $records = Account::orderBy('name', 'asc')
+            ->get();
 
         $resourceCollection = new AccountCollection($records);
 

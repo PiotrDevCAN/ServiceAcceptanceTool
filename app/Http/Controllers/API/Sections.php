@@ -22,12 +22,13 @@ class Sections extends Controller
             'section' => 'required'
         ]);
         $section = new ServiceSection();
-        $section->name = $request->section;
+        $section->name = $request->post('section');
         $section->save();
 
         return response()->json([
             'message' => 'Section has been created successfully.',
             'success' => true,
+            'id' => $section->id,
             'entryUrl' => $section->entry_url
         ]);
     }
@@ -52,6 +53,10 @@ class Sections extends Controller
      */
     public function update(Request $request, ServiceSection $section)
     {
+        $request->validate([
+            'id' => 'required',
+            'section' => 'required'
+        ]);
         $section->name = $request->post('section');
         $section->save();
 
@@ -93,10 +98,53 @@ class Sections extends Controller
 
     public function list(Request $request)
     {
-        $records = ServiceSection::get();
+        $records = ServiceSection::orderBy('name', 'asc')
+            ->get();
 
         $resourceCollection = new ServiceSectionCollection($records);
 
         return $resourceCollection;
+    }
+
+    public function massUpdate(Request $request)
+    {
+        $field = $request->post('field');   // category, service
+        $value = $request->post('value');   // id of selected item
+        if ($request->has('existingItems')) {
+            $existingItems = $request->post('existingItems');
+        } else {
+            $existingItems = array();
+        }
+
+        $valid = false;
+        $delete = false;
+        switch($field) {
+            case 'Delete':
+                $valid = true;
+                $delete = true;
+                break;
+            default:
+                break;
+        }
+
+        if (count($existingItems) == 0) {
+            $valid = false;
+        }
+
+        if ($valid == true) {
+            if ($delete == true) {
+                ServiceSection::whereIn('id', $existingItems)
+                    ->delete();
+            }
+            return response()->json([
+                'message' => 'Records updated',
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Records not updated',
+                'success' => false
+            ]);
+        }
     }
 }

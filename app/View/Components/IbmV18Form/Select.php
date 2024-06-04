@@ -11,7 +11,7 @@ class Select extends Component
     public $selectDisplayKeyReturnValue   = 'displayKeyReturnValue';
     public $selectDisplayKeyReturnKey     = 'displayKeyReturnKey';
     public $selectAcceptMultipleValues    = true;
-    
+
     public $wayToHandleArray;
     public $arrayOfSelectableValues;
     public $label;
@@ -22,13 +22,13 @@ class Select extends Component
     public $placeHolder;
     public $arrayOfDisabledValues;
     public $selectedValues;
-    
+
     public $selected;
     public $disabled;
-    
+
     public $displayValue = 'initial';
     public $returnValue = 'initial';
-    
+
     /**
      * Create a new component instance.
      *
@@ -41,7 +41,7 @@ class Select extends Component
 //         $selectedValues = $allowMultipleSelections ? $model->$fieldName : array($model->$fieldName => $model->$fieldName);
         $selectedValues = null;
         $disabled = ($readonly) ? ' disabledSelect ' : null;
-        
+
         $this->wayToHandleArray = $wayToHandleArray;
         $this->arrayOfSelectableValues = $arrayOfSelectableValues;
         $this->label = $label;
@@ -52,8 +52,10 @@ class Select extends Component
         $this->placeHolder = $placeHolder;
         $this->arrayOfDisabledValues = $arrayOfDisabledValues;
         $this->selectedValues = $selectedValues;
+
+        // dump($this);
     }
-    
+
     /**
      * Determine if the given option is the current selected option.
      *
@@ -65,7 +67,7 @@ class Select extends Component
         if (is_array($item) && !empty($item)) {
             foreach ($item as $key => $value) {
                 //             if ($value == $model->selected) {
-                
+
                 //             } else {
                 //                 return false;
                 //             }
@@ -76,7 +78,7 @@ class Select extends Component
 //             var_dump($item);
         }
     }
-    
+
     /**
      * Determine if the given option is the current disabled option.
      *
@@ -99,7 +101,7 @@ class Select extends Component
 //             var_dump($item);
         }
     }
-    
+
     public function prepareOption($item)
     {
         $fieldName = $this->fieldName;
@@ -127,21 +129,21 @@ class Select extends Component
             return false;
         }
     }
-    
+
     public function getDisplayValue($value)
     {
         $this->prepareOption($value);
-        
+
         return $this->displayValue;
     }
-    
+
     public function getReturnValue($value)
     {
         $this->prepareOption($value);
-        
+
         return $this->returnValue;
     }
-    
+
     /**
      * Get the view / contents that represent the component.
      *

@@ -4,7 +4,6 @@
             <th>Category</th>
             <th>Completed</th>
             <th>Not Completed</th>
-            <th>Not In Scope</th>
         </tr>
     </thead>
     <tbody>
@@ -24,9 +23,6 @@
                 <td>
                     {{ $category->services_not_completed }}
                 </td>
-                <td>
-                    {{ $category->services_not_in_scope }}
-                </td>
             </tr>
         @endforeach
     </tbody>
@@ -35,7 +31,6 @@
             <th>Category</th>
             <th>Completed</th>
             <th>Not Completed</th>
-            <th>Not In Scope</th>
         </tr>
     </tfoot>
 </table>

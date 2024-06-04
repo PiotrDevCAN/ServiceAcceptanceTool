@@ -11,6 +11,19 @@ use App\Auth\Providers\BluegroupsAdminUserProvider;
 use App\Auth\Guards\BluepagesUserGuard;
 use App\Auth\Guards\BluegroupsGuestUserGuard;
 use App\Auth\Guards\BluegroupsAdminUserGuard;
+use App\Ldap\User;
+use App\Models\AccessRequest;
+use App\Models\Account;
+use App\Models\Checklist;
+use App\Models\ServiceCategory;
+use App\Models\ServiceSection;
+use App\Models\Service;
+use App\Policies\AccessRequestPolicy;
+use App\Policies\AccountPolicy;
+use App\Policies\ChecklistPolicy;
+use App\Policies\ServiceCategoryPolicy;
+use App\Policies\ServicePolicy;
+use App\Policies\ServiceSectionPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -21,6 +34,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
+        // AccessRequest::class => AccessRequestPolicy::class,
+        // Account::class => AccountPolicy::class,
+        // Checklist::class => ChecklistPolicy::class,
+        // ServiceCategory::class => ServiceCategoryPolicy::class,
+        // ServiceSection::class => ServiceSectionPolicy::class,
+        // Service::class => ServicePolicy::class,
     ];
 
     /**
@@ -103,6 +122,13 @@ class AuthServiceProvider extends ServiceProvider
                 'hasher' => $app['hash'],
             ]);
         });
+
+        // Gate::define('update-account', function (User $user, Account $account) {
+        //     return $user->mail === $account->user_id;
+        // });
+
+        // Gate::define('update-account', [PostPolicy::class, 'update']);
+
     }
 
     /**

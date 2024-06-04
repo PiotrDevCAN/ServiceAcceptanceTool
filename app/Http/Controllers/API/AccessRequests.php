@@ -33,11 +33,13 @@ class AccessRequests extends Controller
 
             $request->validate([
                 'employee' => 'required',
+                'employee_notes_id' => 'required',
+                'employee_intranet_id' => 'required'
             ]);
             $access = new AccessRequest();
-            $access->employee = $request->employee;
-            $access->employee_notes_id = $request->employee_notes_id;
-            $access->employee_intranet_id = $request->employee_intranet_id;
+            $access->employee = $request->post('employee');
+            $access->employee_notes_id = $request->post('employee_notes_id');
+            $access->employee_intranet_id = $request->post('employee_intranet_id');
             $access->status = AccessRequest::STATUS_PENDING;
             $access->type = AccessRequest::TYPE_ADMIN;
             $access->created_by = $userMail;
@@ -46,6 +48,7 @@ class AccessRequests extends Controller
             return response()->json([
                 'message' => 'Access Request has been created successfully.',
                 'success' => true,
+                'id' => $access->id,
                 'entryUrl' => $access->entry_url
             ]);
         }
@@ -71,12 +74,21 @@ class AccessRequests extends Controller
      */
     public function update(Request $request, AccessRequest $access)
     {
-        $access->employee = $request->input('employee');
-        $access->employee_notes_id = $request->input('employee_notes_id');
-        $access->employee_intranet_id = $request->input('employee_intranet_id');
-        $access->status = $request->input('status');
-        $access->type = $request->input('type');
-        $access->created_by = $request->input('created_by');
+        $request->validate([
+            'id' => 'required',
+            'employee' => 'required',
+            'employee_notes_id' => 'required',
+            'employee_intranet_id' => 'required',
+            'status' => 'required',
+            'type' => 'required',
+            'created_by' => 'required'
+        ]);
+        $access->employee = $request->post('employee');
+        $access->employee_notes_id = $request->post('employee_notes_id');
+        $access->employee_intranet_id = $request->post('employee_intranet_id');
+        $access->status = $request->post('status');
+        $access->type = $request->post('type');
+        $access->created_by = $request->post('created_by');
         $access->save();
 
         // return response()->json($account);

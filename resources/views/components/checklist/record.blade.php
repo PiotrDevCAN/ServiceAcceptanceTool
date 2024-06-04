@@ -33,13 +33,12 @@
                                 <div class="ibm-card">
                                     <div class="ibm-card__content ibm-padding-bottom-0 ibm-padding-border-left">
                                         <ol>
-                                            <li>Fill in the Account Details in the <b>Account Status</b> tab</li>
-                                            <li>Select the services which are in transition in <b>Services Overview</b> tab</li>
-                                            <li>Answer all the questions in the checklist</li>
-                                            <li><b>Account Status</b> sheet would show the overall transition status</li>
-                                            <li><b>Pending Items</b> sheet would show the items which are incomplete</li>
+                                            <li>Fill in the required Details in the <b>Account Status</b> tab</li>
+                                            <li>Select the services which are In Scope in <b>Services Overview</b> tab</li>
+                                            <li>Answer all the questions in the checklist for every <b>Category</b> which are In Scope</li>
+                                            <li><b>Account Status</b> tab would show the overall transition status</li>
+                                            <li><b>Pending Items</b> tab would show the items which are incomplete</li>
                                             <li>For evidences - update the repository location of the documents</li>
-                                            <li>Use the <b>Services Overview</b> to track your account status</li>
                                         </ol>
                                     </div>
                                 </div>
@@ -54,8 +53,11 @@
                     </div>
                     <div id="services-overview" class="ibm-tabs-content">
                         @if (!empty($record->id))
-                            <x-action-list-buttons createUrl="" exportUrl="{{ route('checklist.overviewExport', ['checklist' => $record->id]) }}"/>
-                            <x-checklist.table-overview :record="$record"/>
+                            <x-checklist.tab-heading :record="$record"/>
+                            <x-action-list-buttons createUrl="" exportUrl="{{ route('checklist.overviewExport', ['checklist' => $record->id]) }}" setCategoryStatus=true/>
+                            <div class="ibm-fluid" id="servicesOverviewTable_table_container">
+                                <x-checklist.table-overview :record="$record"/>
+                            </div>
                         @else
                             <div class="ibm-fluid">
                                 <div class="ibm-col-12-12">
@@ -70,8 +72,11 @@
                     </div>
                     <div id="services-pending" class="ibm-tabs-content">
                         @if (!empty($record->id))
-                            <x-action-list-buttons createUrl="" exportUrl="{{ route('checklist.pendingExport', ['checklist' => $record->id]) }}"/>
-                            <x-checklist.service-pending :record="$record"/>
+                            <x-checklist.tab-heading :record="$record"/>
+                            <x-action-list-buttons createUrl="" exportUrl="{{ route('checklist.pendingExport', ['checklist' => $record->id]) }}" setServiceStatus=true/>
+                            <div class="ibm-fluid" id="pendingServicesTable_table_container">
+                                <x-checklist.service-pending :record="$record"/>
+                            </div>
                             <p class="ibm-btn-row ibm-ind-link ibm-right">
                                 <a id="details" class="ibm-btn-pri ibm-bee-link ibm-btn-red-50" href="{{ route('checklist.overviewForChecklist', ['checklist' => $record->id]) }}">Show all items</a>
                             </p>
@@ -117,5 +122,7 @@
         <x-checklist.change-type-form name="checklistTypeForm" :record="$newRecord" />
     </div>
 </div>
+
+@include('components/modals/massUpdateAction')
 
 @endsection

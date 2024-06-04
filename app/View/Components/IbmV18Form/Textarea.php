@@ -44,6 +44,8 @@ class Textarea extends Component
         $this->labelOptions = array(
             'class' => 'ibm-column-field-label'
         );
+
+        // dump($this);
     }
 
     /**

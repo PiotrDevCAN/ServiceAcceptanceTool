@@ -1,14 +1,14 @@
 <table class="ibm-data-table ibm-altrows ibm-padding-small" data-scrollaxis="x" data-info="false" data-ordering="false" data-paging="false" data-searching="false" data-widget="datatable" id="{{ $name }}">
     <thead>
         <tr>
-            <th>S.No</th>
+            <th>Selection</th>
             <th>Category</th>
             <th>Section</th>
             <th>Question</th>
-            <th>Status</th>
-            <th>Evidence</th>
+            <th>Completion Status</th>
+            <th>Evidence + Additional Input</th>
             <th>Completion Date</th>
-            <th>Additional Input</th>
+            <th>Owner</th>
         </tr>
     </thead>
     <tbody>
@@ -26,17 +26,27 @@
                 data-completition_date="@empty($service->completition_date)@else{{ $service->completition_date }}@endempty"
                 data-user_input="{{ $service->user_input }}"
                 >
-                <td>{{ $key + 1 }}</td>
+                <td class="checkbox">
+                    <span class="ibm-checkbox-wrapper">
+                        <input class="ibm-styled-checkbox" id="check_category_{{ $service->id }}" type="checkbox" value="{{ $service->id }}" />
+                        <label for="check_category_{{ $service->id }}" class="ibm-field-label"></label>
+                    </span>
+                </td>
                 <td>{{ $service->category->name }}</td>
                 <td>{{ $service->section->name }}</td>
                 <td>{{ $service->name }}</td>
-                @if (!empty($service->pivot_id))
-                    <td>{{ $service->status }}</td>
-                    <td>{{ $service->evidence }}</td>
-                    <td>@empty($service->completition_date)@else{{ $service->completition_date }}@endempty</td>
-                    <td>{{ $service->user_input }}</td>
+                @if ($service->status == 'Yes')
+                    <td style="background-color: #4b8400; color:#fff">{{ $service->status }}</td>
+                @elseif ($service->status == 'No')
+                    <td style="background-color: #e71d32; color:#fff">{{ $service->status }}</td>
                 @else
-                    <td>{{ $service->status }}</td>
+                    <td style="background-color: #ECECEC; color:#000">{{ $service->status }}</td>
+                @endif
+                @if (!empty($service->pivot_id))
+                    <td>{{ $service->evidence }} {{ $service->user_input }}</td>
+                    <td>@empty($service->completition_date)@else{{ $service->completition_date->format('Y-m-d') }}@endempty</td>
+                    <td>{{ $service->owner }}</td>
+                @else
                     <td></td>
                     <td></td>
                     <td></td>

@@ -8,6 +8,16 @@ use App\Http\Resources\AccountCollection;
 
 class Accounts extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Account::class, 'account');
+    }
+
     private function preparePredicates($request)
     {
         $predicates = array();

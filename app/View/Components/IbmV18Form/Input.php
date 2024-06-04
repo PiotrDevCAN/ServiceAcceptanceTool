@@ -41,7 +41,6 @@ class Input extends Component
         );
 
         // dump($this);
-
     }
 
     /**

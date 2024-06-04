@@ -32,7 +32,7 @@
                         <td><p class="ibm-ind-link ibm-icononly ibm-nospacing">
                             {{ $subCategory->id }}
                         </td>
-                        <td class="ibm-center">
+                        <td style="padding-left: 40px;">
                             {{ $subCategory->parent->name }}
                         </td>
                         <td>

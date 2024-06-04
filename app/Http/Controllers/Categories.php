@@ -8,6 +8,16 @@ use App\Http\Resources\ServiceCategoryCollection;
 
 class Categories extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(ServiceCategory::class, 'category');
+    }
+
     private function preparePredicates($request)
     {
         $predicates = array();
@@ -42,17 +52,25 @@ class Categories extends Controller
         $categoriesTTYes = ServiceCategory::with(['parent', 'children', 'services'])
             ->whereParentId($rootCategoryTTYes->id)
             ->whereType(ServiceCategory::TYPE_TT_YES)
+            ->orderBy('name', 'asc')
             ->get();
 
         $categoriesTTNo = ServiceCategory::with(['parent', 'children', 'services'])
             ->whereParentId($rootCategoryTTNo->id)
             ->whereType(ServiceCategory::TYPE_TT_NO)
+            ->orderBy('name', 'asc')
             ->get();
+
+        $categories = ServiceCategory::with(['parent', 'children'])->get();
+
+        $types = ServiceCategory::TYPES;
 
         $data = array(
             'recordsYes' => $categoriesTTYes,
             'recordsNo' => $categoriesTTNo,
-            'record' => $model
+            'record' => $model,
+            'categories' => $categories,
+            'types' => $types
         );
 
         return view('components.category.index', $data);

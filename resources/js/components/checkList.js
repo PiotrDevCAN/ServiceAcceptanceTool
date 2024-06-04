@@ -6,11 +6,11 @@
 
 import table from "./addons/tableWithModal.js";
 
-import checkListsModal from "./forms/checkListsModal.js";
+import CheckListsModal from "./forms/checkListsModal.js";
 import accountStatusBarChart from "./addons/accountStatusBarChart.js";
 import accountStatusPieChart from "./addons/accountStatusPieChart.js";
-import pendingServicesModal from "./forms/pendingServicesModal.js";
-import servicesOverviewModal from "./forms/servicesOverviewModal.js";
+import PendingServicesModal from "./forms/pendingServicesModal.js";
+import ServicesOverviewModal from "./forms/servicesOverviewModal.js";
 
 class checkList {
 
@@ -29,8 +29,8 @@ class checkList {
             const pie = new accountStatusPieChart(checklist_id);
         }
 
-        var ServiceOverviewTable = new table(this.overviewtableId, servicesOverviewModal);
-        var PendingItemsTable = new table(this.pendingTableId, pendingServicesModal);
+        var ServiceOverviewTable = new table(this.overviewtableId, ServicesOverviewModal);
+        var PendingItemsTable = new table(this.pendingTableId, PendingServicesModal);
 
         console.log('--- Function --- checkList.constructor');
     }

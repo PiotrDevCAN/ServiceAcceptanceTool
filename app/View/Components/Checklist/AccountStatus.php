@@ -54,7 +54,21 @@ class AccountStatus extends Component
 
         // load required relations
         if (!empty($record->id)) {
-            $record->loadCount('inScopeNo', 'inScopeYes', 'notInScope');
+            $record->loadCount(
+                'categories',
+                'services',
+                'inScopeNo',
+                'inScopeYes',
+                'notInScope',
+                'checklistCategoriesInScopeNo',
+                'checklistCategoriesInScopeYes',
+                'checklistCategoriesCompleted',
+                'checklistCategoriesNotCompleted',
+                'checklistCategoriesCompletedInScopeYes',
+                'checklistCategoriesNotCompletedInScopeYes',
+                'checklistCategoriesCompletedInScopeNo',
+                'checklistCategoriesNotCompletedInScopeNo'
+            );
         }
 
         $this->record = $record;

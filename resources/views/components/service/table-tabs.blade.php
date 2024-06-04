@@ -12,9 +12,15 @@
     </div>
     <!-- Tabs contents divs: -->
     <div id="tt_no" class="ibm-tabs-content">
+
+        <x-action-list-buttons createUrl="" exportUrl="" setCategory=true setSection=true delService=true prefix="tt_no"/>
+
         <x-service.table-type name="servicesTableNo" :records="$recordsNo" />
     </div>
     <div id="tt_yes" class="ibm-tabs-content">
+
+        <x-action-list-buttons createUrl="" exportUrl="" setCategory=true setSection=true delService=true prefix="tt_yes"/>
+
         <x-service.table-type name="servicesTableYes" :records="$recordsYes" />
     </div>
 </div>

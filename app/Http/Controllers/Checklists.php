@@ -2,18 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use App\Models\Checklist;
 use App\Models\Service;
 use App\Models\ServiceCategory;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ChecklistCollection;
+use App\Services\MainCategoriesService;
 
 class Checklists extends Controller
 {
+    private $mainCategoriesService;
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct(MainCategoriesService $mainCategoriesService)
+    {
+        $this->mainCategoriesService = $mainCategoriesService;
+        $this->authorizeResource(Checklist::class, 'checklist');
+    }
+
     private function preparePredicates($request)
     {
         $predicates = array();
@@ -38,6 +50,7 @@ class Checklists extends Controller
 
         $records = Account::where('account_dpe_intranet_id', '=', $userMail)
             ->orWhere('tt_focal_intranet_id', '=', $userMail)
+            ->orderBy('name', 'asc')
             ->get();
 
         $data = array(
@@ -54,7 +67,10 @@ class Checklists extends Controller
      */
     public function indexAdmin(Request $request)
     {
-        $records = Account::all();
+        // $this->authorize('viewAnyAdmin', Checklist::class);
+
+        $records = Account::orderBy('name', 'asc')
+            ->get();
 
         $data = array(
             'records' => $records
@@ -85,7 +101,7 @@ class Checklists extends Controller
      * @param  Checklist $checklist
      * @return \Illuminate\Http\Response
      */
-    public function edit(Checklist $checklist)
+    public function edit(Request $request, Checklist $checklist)
     {
         $data = array(
             'record' => $checklist
@@ -101,12 +117,15 @@ class Checklists extends Controller
      */
     public function serviceOverview(Request $request)
     {
+        // $this->authorize('serviceOverview', Checklist::class);
+
         // Get the currently authenticated user...
         $user = Auth::user();
         $userMail = $user->mail[0];
 
         $records = Account::where('account_dpe_intranet_id', '=', $userMail)
             ->orWhere('tt_focal_intranet_id', '=', $userMail)
+            ->orderBy('name', 'asc')
             ->get();
 
         $data = array(
@@ -123,9 +142,10 @@ class Checklists extends Controller
      */
     public function serviceOverviewAdmin(Request $request)
     {
-        // $records = Checklist::all();
+        // $this->authorize('serviceOverviewAdmin', Checklist::class);
 
-        $records = Account::all();
+        $records = Account::orderBy('name', 'asc')
+            ->get();
 
         $data = array(
             'records' => $records
@@ -136,66 +156,10 @@ class Checklists extends Controller
 
     public function serviceOverviewExport(Checklist $checklist)
     {
-        $checklistId = $checklist->id;
-        $mainCategories = ServiceCategory::with(['services', 'checklists'])
-            ->with(['checklists' => function ($query) use($checklistId) {
-                $query->where('checklist_categories.checklist_id', $checklistId);
-            }])
-            ->whereType($checklist->type)
-            ->orderBy('sequence', 'asc')
-            ->get();
-
-        // load required relations
-        $checklist->load('categories', 'services');
-
-        // an existing checklist should have assigned categories
-        $checklistCategories = $checklist->categories;
-
-        // an existing checklist should have assigned services
-        $checklistServices = $checklist->services;
-
-        // check if a specific main category is assigned to current checklist
-        $mainCategories->each(function ($mainCategory, $key) use ($checklistCategories) {
-
-            if ($checklistCategories->contains($mainCategory)) {
-                // dump('object found');
-                $checklistCategory = $checklistCategories->find($mainCategory);
-                $mainCategory->pivot_id = $checklistCategory->pivot->id;
-                $mainCategory->status = $checklistCategory->pivot->status;
-                $mainCategory->in_scope = $checklistCategory->pivot->in_scope;
-            } else {
-                // dump('object not found');
-                $mainCategory->pivot_id = '';
-                $mainCategory->status = ServiceCategory::STATUS_NOT_COMPLETE;
-                $mainCategory->in_scope = ServiceCategory::IN_SCOPE_NO;
-            }
-        });
-
-        // check if a specific main category is assigned to current checklist
-        $mainCategories->each(function ($mainCategory, $key) use ($checklistServices) {
-
-            $mainCategoryServices = $mainCategory->services;
-            $mainCategoryServices->each(function ($mainCategoryService, $key) use ($checklistServices) {
-
-                if ($checklistServices->contains($mainCategoryService)) {
-                    // dump('object found');
-                    $checklistCategoryService = $checklistServices->find($mainCategoryService);
-                    $mainCategoryService->pivot_id = $checklistCategoryService->pivot->id;
-                    $mainCategoryService->status = $checklistCategoryService->pivot->status;
-                    $mainCategoryService->evidence = $checklistCategoryService->pivot->evidence;
-                    $mainCategoryService->completition_date = $checklistCategoryService->pivot->completition_date;
-                    $mainCategoryService->user_input = $checklistCategoryService->pivot->user_input;
-                } else {
-                    // dump('object not found');
-                    $mainCategoryService->pivot_id = '';
-                    $mainCategoryService->status = Service::IN_SCOPE_NO;
-                    $mainCategoryService->evidence = '';
-                    $mainCategoryService->completition_date = '';
-                    $mainCategoryService->user_input = '';
-                }
-
-            });
-        });
+        $mainCategoriesData = $this->mainCategoriesService->prepareMainCategories($checklist);
+        list(
+            'mainCategories' => $mainCategories
+        ) = $mainCategoriesData;
 
         $fileName = 'servicesOverview.csv';
 
@@ -306,74 +270,39 @@ class Checklists extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function serviceOverviewForChecklist(Checklist $checklist)
+    public function checklistForAccountAdmin(Account $account)
     {
-        $checklistId = $checklist->id;
-        $mainCategories = ServiceCategory::with(['services', 'checklists'])
-            ->with(['checklists' => function ($query) use($checklistId) {
-                $query->where('checklist_categories.checklist_id', $checklistId);
-            }])
-            ->whereType($checklist->type)
-            ->orderBy('sequence', 'asc')
-            ->get();
+        $data = array(
+            'record' => $account,
+            'records' => $account->checklists,
+            'types' => ServiceCategory::TYPES
+        );
 
-        // load required relations
-        $checklist->load('categories', 'services');
+        return view('components.checklist.account-checklist-overview', $data);
+    }
 
-        // an existing checklist should have assigned categories
-        $checklistCategories = $checklist->categories;
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function serviceOverviewForChecklist(Checklist $checklist, Request $request)
+    {
+        // $this->authorize('serviceOverviewForChecklist', $checklist);
 
-        // an existing checklist should have assigned services
-        $checklistServices = $checklist->services;
-
-        // check if a specific main category is assigned to current checklist
-        $mainCategories->each(function ($mainCategory, $key) use ($checklistCategories) {
-
-            if ($checklistCategories->contains($mainCategory)) {
-                // dump('object found');
-                $checklistCategory = $checklistCategories->find($mainCategory);
-                $mainCategory->pivot_id = $checklistCategory->pivot->id;
-                $mainCategory->status = $checklistCategory->pivot->status;
-                $mainCategory->in_scope = $checklistCategory->pivot->in_scope;
-            } else {
-                // dump('object not found');
-                $mainCategory->pivot_id = '';
-                $mainCategory->status = ServiceCategory::STATUS_NOT_COMPLETE;
-                $mainCategory->in_scope = ServiceCategory::IN_SCOPE_NO;
-            }
-        });
-
-        // check if a specific main category is assigned to current checklist
-        $mainCategories->each(function ($mainCategory, $key) use ($checklistServices) {
-
-            $mainCategoryServices = $mainCategory->services;
-            $mainCategoryServices->each(function ($mainCategoryService, $key) use ($checklistServices) {
-
-                if ($checklistServices->contains($mainCategoryService)) {
-                    // dump('object found');
-                    $checklistCategoryService = $checklistServices->find($mainCategoryService);
-                    $mainCategoryService->pivot_id = $checklistCategoryService->pivot->id;
-                    $mainCategoryService->status = $checklistCategoryService->pivot->status;
-                    $mainCategoryService->evidence = $checklistCategoryService->pivot->evidence;
-                    $mainCategoryService->completition_date = $checklistCategoryService->pivot->completition_date;
-                    $mainCategoryService->user_input = $checklistCategoryService->pivot->user_input;
-                } else {
-                    // dump('object not found');
-                    $mainCategoryService->pivot_id = '';
-                    $mainCategoryService->status = Service::IN_SCOPE_NOT_IN_SCOPE;
-                    $mainCategoryService->evidence = '';
-                    $mainCategoryService->completition_date = '';
-                    $mainCategoryService->user_input = '';
-                }
-
-            });
-        });
+        $mainCategoriesData = $this->mainCategoriesService->prepareMainCategories($checklist);
+        list(
+            'checklistCategories' => $checklistCategories,
+            'checklistServices' => $checklistServices,
+            'mainCategories' => $mainCategories
+        ) = $mainCategoriesData;
 
         $data = array(
+            'types' => ServiceCategory::TYPES,
             'record' => $checklist,
-            'mainCategories' => $mainCategories,
             'checklistCategories' => $checklistCategories,
-            'types' => ServiceCategory::TYPES
+            'checklistServices' => $checklistServices,
+            'mainCategories' => $mainCategories
         );
 
         return view('components.checklist.category-overview', $data);
@@ -391,72 +320,21 @@ class Checklists extends Controller
      */
     public function serviceOverviewForChecklistAdmin(Checklist $checklist)
     {
-        $checklistId = $checklist->id;
-        $mainCategories = ServiceCategory::with(['services', 'checklists'])
-            ->with(['checklists' => function ($query) use($checklistId) {
-                $query->where('checklist_categories.checklist_id', $checklistId);
-            }])
-            ->whereType($checklist->type)
-            ->orderBy('sequence', 'asc')
-            ->get();
+        // $this->authorize('serviceOverviewForChecklistAdmin', $checklist);
 
-        // load required relations
-        $checklist->load('categories', 'services');
-
-        // an existing checklist should have assigned categories
-        $checklistCategories = $checklist->categories;
-
-        // an existing checklist should have assigned services
-        $checklistServices = $checklist->services;
-
-        // check if a specific main category is assigned to current checklist
-        $mainCategories->each(function ($mainCategory, $key) use ($checklistCategories) {
-
-            if ($checklistCategories->contains($mainCategory)) {
-                // dump('object found');
-                $checklistCategory = $checklistCategories->find($mainCategory);
-                $mainCategory->pivot_id = $checklistCategory->pivot->id;
-                $mainCategory->status = $checklistCategory->pivot->status;
-                $mainCategory->in_scope = $checklistCategory->pivot->in_scope;
-            } else {
-                // dump('object not found');
-                $mainCategory->pivot_id = '';
-                $mainCategory->status = ServiceCategory::STATUS_NOT_COMPLETE;
-                $mainCategory->in_scope = ServiceCategory::IN_SCOPE_NO;
-            }
-        });
-
-        // check if a specific main category is assigned to current checklist
-        $mainCategories->each(function ($mainCategory, $key) use ($checklistServices) {
-
-            $mainCategoryServices = $mainCategory->services;
-            $mainCategoryServices->each(function ($mainCategoryService, $key) use ($checklistServices) {
-
-                if ($checklistServices->contains($mainCategoryService)) {
-                    // dump('object found');
-                    $checklistCategoryService = $checklistServices->find($mainCategoryService);
-                    $mainCategoryService->pivot_id = $checklistCategoryService->pivot->id;
-                    $mainCategoryService->status = $checklistCategoryService->pivot->status;
-                    $mainCategoryService->evidence = $checklistCategoryService->pivot->evidence;
-                    $mainCategoryService->completition_date = $checklistCategoryService->pivot->completition_date;
-                    $mainCategoryService->user_input = $checklistCategoryService->pivot->user_input;
-                } else {
-                    // dump('object not found');
-                    $mainCategoryService->pivot_id = '';
-                    $mainCategoryService->status = Service::IN_SCOPE_NOT_IN_SCOPE;
-                    $mainCategoryService->evidence = '';
-                    $mainCategoryService->completition_date = '';
-                    $mainCategoryService->user_input = '';
-                }
-
-            });
-        });
+        $mainCategoriesData = $this->mainCategoriesService->prepareMainCategories($checklist);
+        list(
+            'checklistCategories' => $checklistCategories,
+            'checklistServices' => $checklistServices,
+            'mainCategories' => $mainCategories
+        ) = $mainCategoriesData;
 
         $data = array(
+            'types' => ServiceCategory::TYPES,
             'record' => $checklist,
-            'mainCategories' => $mainCategories,
             'checklistCategories' => $checklistCategories,
-            'types' => ServiceCategory::TYPES
+            'checklistServices' => $checklistServices,
+            'mainCategories' => $mainCategories
         );
 
         return view('components.checklist.admin-category-overview', $data);
@@ -513,5 +391,27 @@ class Checklists extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    public function servicesList(Checklist $checklist, ServiceCategory $category)
+    {
+        // $this->authorize('serviceOverviewForChecklistAdmin', $checklist);
+
+        $mainCategoriesData = $this->mainCategoriesService->prepareMainCategories($checklist);
+        list(
+            'checklistCategories' => $checklistCategories,
+            'checklistServices' => $checklistServices,
+            'mainCategories' => $mainCategories
+        ) = $mainCategoriesData;
+
+        $data = array(
+            'types' => ServiceCategory::TYPES,
+            'record' => $checklist,
+            'checklistCategories' => $checklistCategories,
+            'checklistServices' => $checklistServices,
+            'mainCategories' => $mainCategories
+        );
+
+        return view('components.checklist.admin-category-overview', $data);
     }
 }

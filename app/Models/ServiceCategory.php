@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-// use Touhidurabir\Filterable\Filterable;
 
 class ServiceCategory extends Model
 {
+    // public $arg1= null;
+
     // use Filterable;
 
     const IN_SCOPE_YES = 'Yes';
@@ -65,6 +65,7 @@ class ServiceCategory extends Model
     ];
 
     protected $appends = ['entry_url'];
+    // protected $appends = ['services_in_scope_yes', 'services_in_scope_no', 'services_not_in_scope', 'ready_to_complete', 'entry_url'];
 
     /**
      * The model's default values for attributes.
@@ -83,6 +84,26 @@ class ServiceCategory extends Model
             return route('admin.category.create');
         }
     }
+
+    // public function getServicesInScopeYesAttribute()
+    // {
+    //     return 'test value yes '.$this->arg1;
+    // }
+
+    // public function getServicesInScopeNoAttribute()
+    // {
+    //     return 'test value no '.$this->arg1;
+    // }
+
+    // public function getServicesNotInScopeAttribute()
+    // {
+    //     return 'test value not in scope '.$this->arg1;
+    // }
+
+    // public function getReadyToCompleteAttribute()
+    // {
+    //     return 'test value ready to complete '.$this->arg1;
+    // }
 
     public static $limit = 10;
 
@@ -108,6 +129,7 @@ class ServiceCategory extends Model
      *
      * @var array
      */
+    // protected $with = ['parent'];
     // protected $with = ['children'];
 
     // protected $withCount = ['children'];
@@ -146,7 +168,8 @@ class ServiceCategory extends Model
      */
     public function children()
     {
-        return $this->hasMany(ServiceCategory::class, 'parent_id', 'id');
+        return $this->hasMany(ServiceCategory::class, 'parent_id', 'id')
+            ->orderBy('name', 'asc');
     }
 
     /**

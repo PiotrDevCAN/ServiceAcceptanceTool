@@ -2,7 +2,10 @@
     <div class="ibm-card">
         <div class="ibm-card__content ibm-padding-bottom-0 ibm-padding-border-left">
 
-            <x-ibmv18form-input field-name="account" label="Account Name" :value="$record->account->name" readonly="readonly"/>
+            <input type="hidden" id="account_id" name="account_id" value="{{ $record->account->id }}"/>
+            <input type="hidden" id="account_created_by" name="account_created_by" value="{{ $record->account->created_by }}"/>
+
+            <x-ibmv18form-input field-name="account" label="Account Name" :value="$record->account->name" required="required" readonly="readonly"/>
 
             <p class='ibm-form-elem-grp' id='TRANSITION_STATEFormGroup'>
                 <label for='transition_state'>Transition State <span class="ibm-required">*</span></label>
@@ -52,10 +55,13 @@
 @else
     <div class="ibm-card">
         <div class="ibm-card__content ibm-padding-bottom-0 ibm-padding-border-left">
+
+            <input type="hidden" id="account_id" name="account_id" value=""/>
+            <input type="hidden" id="account_created_by" name="account_created_by" value=""/>
+
             <div class="ibm-fluid">
                 @if(isset($wizard))
                     <div class="ibm-col-12-12">
-                        <input type="hidden" id="id" name="id" value=""/>
                         <x-ibmv18form-input field-name="account" label="Account Name" required='required'/>
                     </div>
                 @else

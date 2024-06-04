@@ -4,18 +4,41 @@
  *
  */
 
-import table from "./addons/tableWithModal.js";
-import ServicesModal from "./forms/servicesModal.js";
+let table = await cacheBustImport('../tables/tableWithModal.js');
+let ServicesModal = await cacheBustImport('../forms/singleEdit/servicesModal.js');
+
+let MassCategoryActionModal = await cacheBustImport('../forms/massUpdate/massCategoryActionModal.js');
+let MassSectionActionModal = await cacheBustImport('../forms/massUpdate/massSectionActionModal.js');
+
+let servicesTTNoActions = await cacheBustImport('../actions/admin/service/TTNo/actionsContainer.js');
+let servicesTTYesActions = await cacheBustImport('../actions/admin/service/TTYes/actionsContainer.js');
 
 class services {
 
     constructor() {
         console.log('+++ Function +++ services.constructor');
 
+        // pass actions to table
+        const ServicesTTNoActions = new servicesTTNoActions('', MassCategoryActionModal, MassSectionActionModal);
+
+        // pass actions to table
+        const ServicesTTYesActions = new servicesTTYesActions('', MassCategoryActionModal, MassSectionActionModal);
+
         var dataTables = $('.ibm-data-table');
         for (var n = 0; n < dataTables.length; n++) {
             var tableId = dataTables.eq(n).attr('id');
-            var Table = new table('#'+tableId, ServicesModal);
+            if (typeof (tableId) !== 'undefined') {
+                switch (tableId) {
+                    case 'servicesTableNo':
+                        var Table = new table('#' + tableId, ServicesModal, ServicesTTNoActions);
+                        break;
+                    case 'servicesTableYes':
+                        var Table = new table('#' + tableId, ServicesModal, ServicesTTYesActions);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         console.log('--- Function --- services.constructor');

@@ -16,7 +16,7 @@ class AccountForm extends Component
      */
     public function __construct($record)
     {
-        $this->name = 'accountForm';
+        $this->name = 'checklistAccountForm';
         $this->record = $record;
     }
 

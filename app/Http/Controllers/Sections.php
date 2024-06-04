@@ -8,6 +8,16 @@ use App\Http\Resources\ServiceSectionCollection;
 
 class Sections extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(ServiceSection::class, 'section');
+    }
+
     private function preparePredicates($request)
     {
         $predicates = array();
@@ -29,7 +39,8 @@ class Sections extends Controller
      */
     public function index(Request $request)
     {
-        $records = ServiceSection::all();
+        $records = ServiceSection::orderBy('name', 'asc')
+            ->get();
         $model = new ServiceSection();
 
         $data = array(

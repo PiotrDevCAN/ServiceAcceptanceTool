@@ -24,7 +24,17 @@
                     >
                     <option value=''>Select</option>
                     @foreach ($categories as $key => $value)
-                        <option value='{{ $value->id }}' {{ $record->parent_id == $value->id ? 'selected="selected"' : '' }}>{{ $value->name }}</option>
+                        <option value='{{ $value->id }}' {{ $record->parent_id == $value->id ? 'selected="selected"' : '' }}>{{ $value->name }}
+                        (@switch($value->type)
+                            @case('T&T_NO')
+                                Non T&T
+                                @break
+                            @case('T&T_YES')
+                                T&T
+                                @break
+                            @default
+                        @endswitch)
+                        </option>
                     @endforeach
                     </select>
                 </span>

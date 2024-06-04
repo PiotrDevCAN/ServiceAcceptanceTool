@@ -10,6 +10,16 @@ use App\Http\Resources\ServiceCollection;
 
 class Services extends Controller
 {
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Service::class, 'service');
+    }
+
     private function preparePredicates($request)
     {
         $predicates = array();
@@ -32,17 +42,27 @@ class Services extends Controller
     public function index(Request $request)
     {
         $recordsYes = Service::has('categoryTTYes')
+            ->orderBy('category_id', 'asc')
+            ->orderBy('section_id', 'asc')
             ->get();
 
         $recordsNo = Service::has('categoryTTNo')
+            ->orderBy('category_id', 'asc')
+            ->orderBy('section_id', 'asc')
             ->get();
 
         $model = new Service();
+
+        $categories = ServiceCategory::all();
+
+        $sections = ServiceSection::all();
 
         $data = array(
             'recordsYes' => $recordsYes,
             'recordsNo' => $recordsNo,
             'record' => $model,
+            'categories' => $categories,
+            'sections' => $sections
         );
 
         return view('components.service.index', $data);

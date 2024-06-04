@@ -8,15 +8,17 @@
 
 <x-category.table-tabs :recordsYes="$recordsYes" :recordsNo="$recordsNo"/>
 
-@isset($records)
-	<x-category.table name="categoriesTable" :records="$records" />
-@endisset
-
 <!-- Overlay -->
 <div class="ibm-common-overlay ibm-overlay-alt-three" data-widget="overlay" id="editModal">
     <div id='overlayContent'>
         <x-category.form name="categoryForm" :record="$record"/>
     </div>
 </div>
+
+@include('components/modals/massUpdateAction')
+
+@include('components/modals/massUpdateParentAction')
+
+@include('components/modals/massUpdateTTTypeAction')
 
 @endsection
